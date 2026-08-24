@@ -1,9 +1,10 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
-from pydantic_models.classification import ClassificationResponse, TextRequest
-from services.classification_service import ClassificationService
 from starlette import status
+
+from app.pydantic_models.classification import ClassificationResponse, TextRequest
+from app.services.classification_service import ClassificationService
 
 router = APIRouter()
 

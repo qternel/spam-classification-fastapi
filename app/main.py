@@ -1,15 +1,22 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import joblib
+import spacy
 from fastapi import FastAPI
-from mock_objects.mock_classfier import MockClassifier
-from routes import classification
+
+from app.mock_objects.mock_classifier import MockClassifier
+from app.routes import classification
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # app.state.classifier = joblib.load("../models/voting_classifier.joblib")
-    app.state.classifier = MockClassifier()
+    path = (
+        Path(__file__).resolve().parent.parent / "models" / "voting_classifier.joblib"
+    )
+    app.state.spacy_model = spacy.load("en_core_web_md")
+    app.state.classifier = joblib.load(path)
+    # app.state.classifier = MockClassifier()
     yield
 
 
