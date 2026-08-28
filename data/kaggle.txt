@@ -1,1 +1,2 @@
 https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset/data
+https://www.kaggle.com/datasets/venky73/spam-mails-dataset
