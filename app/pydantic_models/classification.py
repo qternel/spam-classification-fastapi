@@ -9,3 +9,12 @@ class TextRequest(BaseModel):
 
 class ClassificationResponse(TextRequest):
     is_spam: bool
+
+
+class CollectMisclassificationRequest(BaseModel):
+    text: Annotated[str, Field(min_length=1)]
+    true_label: bool
+
+
+class CollectMisclasificationResponse(CollectMisclassificationRequest):
+    predicted_label: bool
