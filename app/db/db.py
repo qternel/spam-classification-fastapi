@@ -8,8 +8,9 @@ from sqlalchemy.orm import sessionmaker
 load_dotenv()
 
 pwd = os.getenv("DB_PASSWORD")
+db_address = os.getenv("DB_ADDRESS")
 
-DB_URL = f"postgresql+psycopg://postgres:{pwd}@db:5432/app_db"
+DB_URL = f"postgresql+psycopg://postgres:{pwd}@{db_address}:5432/app_db"
 connect_args = {}
 
 engine = create_engine(DB_URL, connect_args=connect_args)

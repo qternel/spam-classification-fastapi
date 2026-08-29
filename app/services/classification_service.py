@@ -5,6 +5,8 @@ import spacy
 from fastapi import Depends, Request
 from sklearn.ensemble import VotingClassifier
 
+from app.db.db import Session
+from app.db.db_models import Misclassification
 from app.mock_objects.mock_db import MockDB, MockMisclassification
 from app.pydantic_models.classification import CollectMisclasificationResponse
 
@@ -18,7 +20,7 @@ def get_spacy_model(request: Request):
 
 
 def get_db():
-    db = MockDB()
+    db = Session()
     try:
         yield db
     finally:
@@ -43,7 +45,7 @@ class ClassificationService:
     def collect_misclassification(self, text: str, true_label: bool):
         prediction = self._classifier.predict([self.normailize_text(text)])[0]
         if prediction != true_label:
-            mscl = MockMisclassification(text=text, label=true_label)
+            mscl = Misclassification(text=text, label=true_label)
             self._db.add(mscl)
             self._db.commit()
 
