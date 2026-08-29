@@ -5,6 +5,7 @@ import joblib
 import spacy
 from fastapi import FastAPI
 
+from app.db.db import Base, engine
 from app.mock_objects.mock_classifier import MockClassifier
 from app.routes import classification
 
@@ -21,4 +22,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+Base.metadata.create_all(engine)
+
 app.include_router(classification.router)

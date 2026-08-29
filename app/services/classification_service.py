@@ -43,7 +43,7 @@ class ClassificationService:
     def collect_misclassification(self, text: str, true_label: bool):
         prediction = self._classifier.predict([self.normailize_text(text)])[0]
         if prediction != true_label:
-            mscl = MockMisclassification(text, true_label)
+            mscl = MockMisclassification(text=text, label=true_label)
             self._db.add(mscl)
             self._db.commit()
 
