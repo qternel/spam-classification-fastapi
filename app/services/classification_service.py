@@ -4,8 +4,9 @@ from typing import Annotated
 import spacy
 from fastapi import Depends, Request
 from sklearn.ensemble import VotingClassifier
+from sqlalchemy.orm import Session
 
-from app.db.db import Session
+import app.db.db
 from app.db.db_models import Misclassification
 from app.mock_objects.mock_db import MockDB, MockMisclassification
 from app.pydantic_models.classification import CollectMisclasificationResponse
@@ -20,7 +21,7 @@ def get_spacy_model(request: Request):
 
 
 def get_db():
-    db = Session()
+    db = app.db.db.Session()
     try:
         yield db
     finally:
@@ -33,7 +34,7 @@ class ClassificationService:
         self,
         classifier: Annotated[VotingClassifier, Depends(get_classifier)],
         spacy_model: Annotated[spacy.language.Language, Depends(get_spacy_model)],
-        db: Annotated[MockDB, Depends(get_db)],
+        db: Annotated[Session, Depends(get_db)],
     ):
         self._classifier = classifier
         self._spacy_model = spacy_model
