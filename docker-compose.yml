@@ -8,6 +8,16 @@ services:
     depends_on:
       - db
 
+  streamlit:
+    build: .
+    command: streamlit run streamlit/main.py --server.address=0.0.0.0 --server.port=8501
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    depends_on:
+      - api
+
   db:
     image: postgres:17
     environment:

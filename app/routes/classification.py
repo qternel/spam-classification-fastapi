@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from starlette import status
 
 from app.pydantic_models.classification import (
@@ -14,15 +14,13 @@ from app.services.classification_service import ClassificationService
 router = APIRouter()
 
 
-@router.post(
+@router.get(
     "/classify", status_code=status.HTTP_200_OK, response_model=ClassificationResponse
 )
 async def classify_text(
-    text_request: TextRequest,
+    text: Annotated[str, Query(min_length=1)],
     classification_service: Annotated[ClassificationService, Depends()],
 ):
-    text = text_request.text
-
     return ClassificationResponse(
         text=text, is_spam=classification_service.classify_text(text)
     )
