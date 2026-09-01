@@ -38,3 +38,10 @@ async def collect_misclassification(
     return classification_service.collect_misclassification(
         request.text, request.true_label
     )
+
+
+@router.get("/get_misclassifications", status_code=status.HTTP_200_OK)
+async def get_misclassifications(
+    classification_service: Annotated[ClassificationService, Depends()],
+):
+    return classification_service.get_misclassifications()

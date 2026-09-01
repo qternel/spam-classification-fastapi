@@ -54,6 +54,9 @@ class ClassificationService:
             text=text, true_label=true_label, predicted_label=prediction
         )
 
+    def get_misclassifications(self):
+        return self._db.query(Misclassification).all()
+
     def normailize_text(self, text: str):
         text = text.lower()
         text = re.sub(r"\d+", " ", text)
